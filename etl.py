@@ -134,7 +134,8 @@ def process_log_data(spark, input_data, output_data, song_data = None):
     # extract columns from joined song and log datasets to create songplays table 
     songplays_table = spark.sql('''
                         SELECT 
-                        l.ts AS start_time
+                        monotonically_increasing_id() as songplay_id,
+                        , l.ts AS start_time
                         , month(to_timestamp(l.ts / 1000.0)) AS month
                         , year(to_timestamp(l.ts / 1000.0)) AS year
                         , l.userId AS user_id
