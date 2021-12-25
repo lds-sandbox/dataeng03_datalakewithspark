@@ -1,0 +1,6 @@
+*.cfg
+.workspace-config.json
+.ipynb_checkpoints
+__pycache__
+data
+spark-warehouse
