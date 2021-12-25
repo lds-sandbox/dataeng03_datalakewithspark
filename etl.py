@@ -33,11 +33,9 @@ def process_song_data(spark, input_data, output_data):
     """
     # get filepath to song data file
     song_data = input_data + "song_data/*/*/*/*.json"
-    #song_data = input_data + "song_data/A/B/C/TRABCAS128F14A25E2.json"
     
     # read song data file
     df = spark.read.json(song_data)
-    #df.printSchema()
 
     
     # extract columns to create songs table
@@ -55,7 +53,6 @@ def process_song_data(spark, input_data, output_data):
     
     
     # write songs table to parquet files partitioned by year and artist
-    #songs_table.show()
     songs_table.write.mode("overwrite").partitionBy('year', 'artist_id').parquet(output_data + 'songs_table/')
 
     
@@ -72,7 +69,6 @@ def process_song_data(spark, input_data, output_data):
     
     
     # write artists table to parquet files
-    #artists_table.show()
     artists_table.write.mode("overwrite").parquet(output_data + 'artists_table/')
     
 
@@ -90,14 +86,12 @@ def process_log_data(spark, input_data, output_data, song_data = None):
     
     # get filepath to log data file
     log_data = input_data + 'log_data/*/*/*.json'
-    #log_data = input_data + 'log_data/2018/11/2018-11-01-events.json'
 
     # read log data file
     df = spark.read.json(log_data)
     
     # filter by actions for song plays
     df = df.filter(df.page == 'NextSong')
-    #df.printSchema()
     
     # create dataframe view
     df.createOrReplaceTempView("log_data_view")
@@ -131,7 +125,6 @@ def process_log_data(spark, input_data, output_data, song_data = None):
     ''')
     
     # write time table to parquet files partitioned by year and month
-    #time_table.show()
     time_table.write.mode("overwrite").partitionBy('year', 'month').parquet(output_data + 'time_table/')
     
     # read in song data to use for songplays table
@@ -156,7 +149,6 @@ def process_log_data(spark, input_data, output_data, song_data = None):
     ''')
 
     # write songplays table to parquet files partitioned by year and month
-    #songplays_table.show()
     songplays_table.write.mode("overwrite").partitionBy('year', 'month').parquet(output_data + 'songplays_table/')
 
 def main():
@@ -164,7 +156,7 @@ def main():
     input_data = "s3a://udacity-dend/"
     output_data = output_path  # expects output bucket to be specified in configuration file (AWS -> S3_OUTPUT_BUCKET)
     
-    #process_song_data(spark, input_data, output_data)    
+    process_song_data(spark, input_data, output_data)    
     process_log_data(spark, input_data, output_data)
 
 
